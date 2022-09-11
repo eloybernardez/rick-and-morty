@@ -15,6 +15,8 @@ const StyledButton = styled.button`
   font-family: monospace;
   margin: 1rem;
   padding: 1rem;
+  border: 0.1rem solid ${({ dark }) => (dark ? "#d3dfe6" : "#272727")};
+  border-radius: 1.2rem;
   background: ${({ dark }) => (!dark ? "#d3dfe6" : "#272727")};
   color: ${({ dark }) => (dark ? "#d3dfe6" : "#272727")};
 `;
