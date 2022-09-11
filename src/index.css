@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "Get Schwifty";
+  src: url("assets/get_schwifty.ttf");
+}
+
+#root {
+  margin: 0;
+}
+
+html {
+  font-family: monospace;
+  font-size: 62.5%;
+}
+
+html body {
+  margin: 0;
+}
