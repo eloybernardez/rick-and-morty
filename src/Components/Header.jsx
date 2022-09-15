@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import ColorContext from "../context/ColorContext";
+import ThemeContext from "../context/ThemeContext";
 
 const StyledHeader = styled.header`
   background-color: ${({ dark }) => (dark ? "black" : "white")};
@@ -26,19 +26,37 @@ const StyledDescription = styled.p`
   color: ${({ dark }) => (dark ? "white" : "black")};
 `;
 
-const Header = () => {
-  const { darkMode } = useContext(ColorContext);
-  return (
-    <StyledHeader dark={darkMode}>
-      <StyledTitle dark={darkMode}>Rick and Morty</StyledTitle>
+const StyledButton = styled.button`
+  font-family: monospace;
+  margin: 1rem;
+  padding: 1rem;
+  border: 0.1rem solid ${({ dark }) => (dark ? "#d3dfe6" : "#272727")};
+  border-radius: 1.2rem;
+  background: ${({ dark }) => (!dark ? "#d3dfe6" : "#272727")};
+  color: ${({ dark }) => (dark ? "#d3dfe6" : "#272727")};
+`;
 
-      <StyledDescription dark={darkMode}>
+const Header = () => {
+  const [darkMode, setDarkMode] = useState(false);
+  const color = useContext(ThemeContext);
+
+  const handleClick = () => setDarkMode(!darkMode);
+
+  return (
+    <StyledHeader>
+      <StyledTitle style={{ color }}>Rick and Morty</StyledTitle>
+
+      <StyledDescription>
         Rick, an alcoholic sociopath and scientist, lives with his daughter
         Beth's family. Apart from building gadgets, he takes his morally right
         but dimwit grandson Morty on absurd intergalactic adventures.
       </StyledDescription>
 
-      <StyledType dark={darkMode}>Characters</StyledType>
+      <StyledType>Characters</StyledType>
+
+      <StyledButton type="button" onClick={handleClick}>
+        {darkMode ? "Dark" : "Light"} Mode
+      </StyledButton>
     </StyledHeader>
   );
 };
