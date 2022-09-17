@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState, useMemo } from "react";
 import Character from "./Character";
 import useGetCharacters from "../hooks/useGetCharacters";
 import styled from "styled-components";
@@ -29,9 +29,24 @@ const favoriteReducer = (state, action) => {
 const Characters = ({ dark }) => {
   const { newCharacters } = useGetCharacters();
   const [favorites, dispatch] = useReducer(favoriteReducer, initialState);
+  const [search, setSearch] = useState("");
 
   const handleClick = (favorite) =>
     dispatch({ type: "ADD_TO_FAVORITE", payload: favorite });
+
+  const handleSearch = (event) => setSearch(event.target.value);
+
+  // const filteredCharacters = newCharacters.filter((user) => {
+  //   return user.name.toLowerCase().includes(search.toLowerCase());
+  // });
+
+  const filteredCharacters = useMemo(
+    () =>
+      newCharacters.filter((user) => {
+        return user.name.toLowerCase().includes(search.toLowerCase());
+      }),
+    [newCharacters, search]
+  );
 
   return (
     <section>
@@ -39,8 +54,12 @@ const Characters = ({ dark }) => {
         <li key={`${favorite.id}`}>{favorite.name}</li>
       ))}
 
+      <div className="Search">
+        <input type="text" value={search} onChange={handleSearch} />
+      </div>
+
       <StyledDiv>
-        {newCharacters.map((char) => {
+        {filteredCharacters.map((char) => {
           return (
             <div key={`Character-${char.id}`}>
               <Character character={char} dark={dark} />
