@@ -1,5 +1,12 @@
-import React, { useRef, useReducer, useState, useMemo } from "react";
+import React, {
+  useCallback,
+  useRef,
+  useReducer,
+  useState,
+  useMemo,
+} from "react";
 import Character from "./Character";
+import Search from "./Search";
 import useGetCharacters from "../hooks/useGetCharacters";
 import styled from "styled-components";
 
@@ -36,7 +43,11 @@ const Characters = ({ dark }) => {
     dispatch({ type: "ADD_TO_FAVORITE", payload: favorite });
 
   // cambio search por searchInput donde tenemos la referencia al value del input
-  const handleSearch = () => setSearch(searchInput.current.value);
+  // const handleSearch = () => setSearch(searchInput.current.value);
+  const handleSearch = useCallback(
+    () => setSearch(searchInput.current.value),
+    []
+  );
 
   // const filteredCharacters = newCharacters.filter((user) => {
   //   return user.name.toLowerCase().includes(search.toLowerCase());
@@ -56,14 +67,11 @@ const Characters = ({ dark }) => {
         <li key={`${favorite.id}`}>{favorite.name}</li>
       ))}
 
-      <div className="Search">
-        <input
-          type="text"
-          value={search}
-          ref={searchInput}
-          onChange={handleSearch}
-        />
-      </div>
+      <Search
+        search={search}
+        searchInput={searchInput}
+        handleSearch={handleSearch}
+      />
 
       <StyledDiv>
         {filteredCharacters.map((char) => {
