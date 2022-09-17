@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useMemo } from "react";
+import React, { useRef, useReducer, useState, useMemo } from "react";
 import Character from "./Character";
 import useGetCharacters from "../hooks/useGetCharacters";
 import styled from "styled-components";
@@ -30,11 +30,13 @@ const Characters = ({ dark }) => {
   const { newCharacters } = useGetCharacters();
   const [favorites, dispatch] = useReducer(favoriteReducer, initialState);
   const [search, setSearch] = useState("");
+  const searchInput = useRef(null);
 
   const handleClick = (favorite) =>
     dispatch({ type: "ADD_TO_FAVORITE", payload: favorite });
 
-  const handleSearch = (event) => setSearch(event.target.value);
+  // cambio search por searchInput donde tenemos la referencia al value del input
+  const handleSearch = () => setSearch(searchInput.current.value);
 
   // const filteredCharacters = newCharacters.filter((user) => {
   //   return user.name.toLowerCase().includes(search.toLowerCase());
@@ -55,7 +57,12 @@ const Characters = ({ dark }) => {
       ))}
 
       <div className="Search">
-        <input type="text" value={search} onChange={handleSearch} />
+        <input
+          type="text"
+          value={search}
+          ref={searchInput}
+          onChange={handleSearch}
+        />
       </div>
 
       <StyledDiv>
