@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const CharacterContainer = styled.main`
-  background: ${({ dark }) => (!dark ? "#272727" : "#d3dfe6")};
-  color: ${({ dark }) => (dark ? "#272727" : "#d3dfe6")};
+  background: ${({ dark }) => (!dark ? "#272727" : "#ffff")};
+  color: ${({ dark }) => (dark ? "#272727" : "#ffff")};
   width: 70%;
   height: auto;
   padding: 1rem;
@@ -29,7 +29,7 @@ const CharacterTitle = styled.h3`
 
 const CharacterStatus = styled.p`
   font-weight: bolder;
-  color: ${({ status }) => (status === "Alive" ? "#6cac6c" : "#ff9800")};
+  color: ${({ status }) => (status === "Alive" ? "#1b6f20" : "#ff9800")};
 `;
 
 const CharacterPropertiesList = styled.ul`
@@ -47,10 +47,11 @@ const CharacterProperty = styled.li`
 const CharacterButtonFavorite = styled.button`
   font-family: monospace;
   border-radius: 6px;
-  border-color: #ff9800;
+  font-weight: bolder;
+  border-color: ${(dark) => (dark ? "#ff9550" : "#ff9800")};
   background-color: transparent;
   cursor: pointer;
-  color: ${({ dark }) => (!dark ? "#6cac6c" : "#1b6f20")};
+  color: ${(dark) => (!dark ? "#ff9800" : "#ff9550")};
 
   &:active {
     background-color: #6cac6c;
@@ -91,12 +92,13 @@ const Character = ({ character, handleAdd, handleRemove, dark }) => {
 
       <CharacterButtonFavorite
         dark={dark}
+        isAdded={isAdded}
         onClick={() => {
           isAdded ? handleRemove(character) : handleAdd(character);
           handleAdded();
         }}
       >
-        {!isAdded ? "🥒 Favorite" : "✔ Added"}
+        {!isAdded ? "🪐 Favorite" : "✔ Added"}
       </CharacterButtonFavorite>
     </CharacterContainer>
   );
