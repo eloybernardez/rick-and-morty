@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-const StyledDiv = styled.main`
+const CharacterContainer = styled.main`
   background: ${({ dark }) => (!dark ? "#272727" : "#d3dfe6")};
   color: ${({ dark }) => (dark ? "#272727" : "#d3dfe6")};
   width: 70%;
@@ -10,29 +10,29 @@ const StyledDiv = styled.main`
   border-radius: 10px;
   margin: 1.5rem 2rem;
 `;
-const StyledPicture = styled.picture`
+const CharacterImgContainer = styled.picture`
   width: 200px;
   height: auto;
 `;
 
-const StyledImg = styled.img`
+const CharacterImg = styled.img`
   width: 100%;
   height: auto;
 `;
 
-const StyledH3 = styled.h3`
+const CharacterTitle = styled.h3`
   font-family: "Get Schwifty";
   font-size: 2rem;
   font-weight: bolder;
   color: ${({ dark }) => (!dark ? "#6cac6c" : "#1b6f20")};
 `;
 
-const StyledP = styled.p`
+const CharacterStatus = styled.p`
   font-weight: bolder;
   color: ${({ status }) => (status === "Alive" ? "#6cac6c" : "#ff9800")};
 `;
 
-const StyledUl = styled.ul`
+const CharacterPropertiesList = styled.ul`
   padding: 0.5rem 0;
   list-style-type: none;
   font-weight: regular;
@@ -40,37 +40,65 @@ const StyledUl = styled.ul`
   font-weight: bold;
 `;
 
-const StyledLi = styled.li`
+const CharacterProperty = styled.li`
   margin: 1rem 0;
 `;
 
-const Character = ({ character, dark }) => {
+const CharacterButtonFavorite = styled.button`
+  font-family: monospace;
+  border-radius: 6px;
+  border-color: #ff9800;
+  background-color: transparent;
+  cursor: pointer;
+  color: ${({ dark }) => (!dark ? "#6cac6c" : "#1b6f20")};
+
+  &:active {
+    background-color: #6cac6c;
+  }
+`;
+
+const Character = ({ character, handleAdd, handleRemove, dark }) => {
+  const [isAdded, setIsAdded] = useState(false);
+
+  const handleAdded = () => {
+    setIsAdded((prevState) => !prevState);
+  };
   return (
-    <StyledDiv dark={dark}>
-      <StyledPicture>
-        <StyledImg src={character.image} alt={character.name} />
-      </StyledPicture>
+    <CharacterContainer dark={dark}>
+      <CharacterImgContainer>
+        <CharacterImg src={character.image} alt={character.name} />
+      </CharacterImgContainer>
 
-      <StyledH3 dark={dark}>{character.name}</StyledH3>
+      <CharacterTitle dark={dark}>{character.name}</CharacterTitle>
 
-      <StyledP status={character.status}>
+      <CharacterStatus status={character.status}>
         {character.status === "Alive" ? `😃 ` : `💀`} {character.status}
-      </StyledP>
+      </CharacterStatus>
 
-      <StyledUl dark={dark}>
-        <StyledLi>
+      <CharacterPropertiesList dark={dark}>
+        <CharacterProperty>
           {character.species === "Human" ? (
             <span>💁‍♂️ Human</span>
           ) : (
             <span>👽 Alien</span>
           )}{" "}
           {character.gender}
-        </StyledLi>
-        <StyledLi>
+        </CharacterProperty>
+        <CharacterProperty>
           <span>🌎 {character.origin.name}</span>
-        </StyledLi>
-      </StyledUl>
-    </StyledDiv>
+        </CharacterProperty>
+      </CharacterPropertiesList>
+
+      <CharacterButtonFavorite
+        dark={dark}
+        onClick={() => {
+          isAdded ? handleRemove(character) : handleAdd(character);
+          handleAdded();
+        }}
+      >
+        {!isAdded ? "🥒 Favorite" : "✔ Added"}
+      </CharacterButtonFavorite>
+    </CharacterContainer>
   );
 };
 

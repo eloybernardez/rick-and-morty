@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import Characters from "./Characters";
 import styled from "styled-components";
+import ColorContext from "../context/ColorContext";
 
 const StyledMain = styled.main`
   position: relative;
@@ -11,9 +12,10 @@ const StyledMain = styled.main`
 `;
 
 const Main = () => {
+  const { darkMode } = useContext(ColorContext);
   return (
-    <StyledMain>
-      <Characters />
+    <StyledMain dark={darkMode}>
+      <Characters dark={darkMode} />
     </StyledMain>
   );
 };

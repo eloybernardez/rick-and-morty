@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import useIntersection from "./useIntersection";
 
-const API = "https://rickandmortyapi.com/api/character";
-
-const useGetCharacters = () => {
+const useGetCharacters = (url) => {
   const [newCharacters, setNewCharacters] = useState([]);
-  const [nextPage, setNextPage] = useState(API);
+  const [nextPage, setNextPage] = useState(url);
   const { isIntersecting } = useIntersection();
 
   useEffect(() => {
     try {
       fetch(nextPage)
-        .then((res) => res.json())
+        .then((response) => response.json())
         .then((data) => {
           setNewCharacters([...newCharacters, ...data.results]);
           setNextPage(data.info.next);
@@ -19,7 +17,7 @@ const useGetCharacters = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [isIntersecting]);
+  }, [url, isIntersecting]);
 
   return { newCharacters };
 };
