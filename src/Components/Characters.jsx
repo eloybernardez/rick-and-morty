@@ -114,18 +114,24 @@ const Characters = ({ dark }) => {
       </FavoriteContainer>
 
       <CharactersContainer>
-        {filteredCharacters.map((char) => {
-          return (
-            <div key={`Character-${char.id}`}>
-              <Character
-                character={char}
-                handleAdd={handleAdd}
-                handleRemove={handleRemove}
-                dark={dark}
-              />
-            </div>
-          );
-        })}
+        {filteredCharacters.length ? (
+          filteredCharacters.map((char) => {
+            return (
+              <div key={`Character-${char.id}`}>
+                <Character
+                  character={char}
+                  handleAdd={handleAdd}
+                  handleRemove={handleRemove}
+                  dark={dark}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <FavoriteName>
+            No characters found! Maybe trying in another dimension? 🍄
+          </FavoriteName>
+        )}
       </CharactersContainer>
     </section>
   );

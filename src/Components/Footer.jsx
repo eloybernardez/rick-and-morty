@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
+import ColorContext from "../context/ColorContext";
 import styled from "styled-components";
 
 const StyledFooter = styled.footer`
   width: 100%;
   height: 400px;
+  width: 100%;
+  background-color: ${({ dark }) => (dark ? "#000000" : "#ffffff")};
 `;
 
 const Footer = () => {
-  return (
-    <StyledFooter id="footer">
-      <div>Created with React</div>
-    </StyledFooter>
-  );
+  const { darkMode } = useContext(ColorContext);
+  return <StyledFooter dark={darkMode} id="footer"></StyledFooter>;
 };
 
 export default Footer;
