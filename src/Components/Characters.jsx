@@ -114,7 +114,7 @@ const Characters = ({ dark }) => {
       </FavoriteContainer>
 
       <CharactersContainer>
-        {filteredCharacters.length > 0 &&
+        {filteredCharacters &&
           !loading &&
           !error &&
           filteredCharacters.map((char) => {
@@ -129,10 +129,10 @@ const Characters = ({ dark }) => {
               </div>
             );
           })}
-        {filteredCharacters.length === 0 && !error && loading && (
-          <h1>Loading...</h1>
-        )}
-        {filteredCharacters.length === 0 && !loading && !error && (
+
+        {!filteredCharacters && !error && loading && <h1>Loading...</h1>}
+
+        {!filteredCharacters && !loading && !error && (
           <FavoriteName>
             No characters found! Maybe trying in another dimension? 🍄
           </FavoriteName>
