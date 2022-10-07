@@ -3,7 +3,6 @@ import ColorContext from "../context/ColorContext";
 import styled from "styled-components";
 
 const StyledFooter = styled.footer`
-  width: 100%;
   height: 400px;
   width: 100%;
   background-color: ${({ dark }) => (dark ? "#000000" : "#ffffff")};
