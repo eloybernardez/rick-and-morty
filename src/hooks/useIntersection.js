@@ -18,7 +18,7 @@ const useIntersection = () => {
 
     let options = {
       root: null,
-      rootMargin: "-100px 0px 100px 0px", // we set a rootMargin to make sure that the that the images loads before the user reaches the footer
+      rootMargin: "0px", // we set a rootMargin to make sure that the that the images loads before the user reaches the footer
       threshold: 0.4,
     };
     let observer = new IntersectionObserver(intersectionCallback, options);

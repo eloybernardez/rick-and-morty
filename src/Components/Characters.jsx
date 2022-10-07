@@ -85,7 +85,7 @@ const Characters = ({ dark }) => {
       <Favorites favorites={favorites} />
 
       <CharactersContainer>
-        {filteredCharacters.length &&
+        {filteredCharacters.length > 0 &&
           !loading &&
           !error &&
           filteredCharacters.map((char) => {
@@ -103,10 +103,14 @@ const Characters = ({ dark }) => {
 
         {!filteredCharacters.length && !error && loading && <Spinner />}
 
-        {!filteredCharacters.length && !loading && !error && (
+        {filteredCharacters.length === 0 && !loading && !error && (
           <ErrorState>
             No characters found! Maybe trying in another dimension? 🍄
           </ErrorState>
+        )}
+
+        {filteredCharacters.length === 0 && error && !loading && (
+          <ErrorState>There was a error wubalubadubdub... ☄</ErrorState>
         )}
       </CharactersContainer>
     </section>
