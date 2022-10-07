@@ -8,6 +8,7 @@ import React, {
 import Character from "./Character";
 import Search from "./Search";
 import useGetCharacters from "../hooks/useGetCharacters";
+import Spinner from "./Spinner";
 import styled from "styled-components";
 
 const API = "https://rickandmortyapi.com/api/character";
@@ -26,9 +27,33 @@ const FavoriteContainer = styled.div`
   border: 1px solid #ff9800;
 `;
 
+const FavoriteCard = styled.div`
+  background-color: #272727;
+  border-radius: 10px;
+  padding: 0.5rem;
+  width: 215px;
+  margin: 1rem;
+`;
+
+const FavoritePicture = styled.picture`
+  width: 60px;
+  height: 60px;
+`;
+
+const FavoriteImg = styled.img`
+  margin-top: 8px;
+  width: 30%;
+  border-radius: 50%;
+`;
+
+const FavoriteOrigin = styled.p`
+  color: #ffffff;
+`;
+
 const FavoriteName = styled.p`
   font-size: 2.4rem;
   font-family: sans-serif;
+  color: #6cac6c;
 `;
 
 const FavoriteContainerTitle = styled.h3`
@@ -92,6 +117,8 @@ const Characters = ({ dark }) => {
     [newCharacters, search]
   );
 
+  const { favoriteCharacters = favorites.favorites } = favorites;
+
   return (
     <section>
       <Search
@@ -103,9 +130,19 @@ const Characters = ({ dark }) => {
       <FavoriteContainer>
         <FavoriteContainerTitle>Favorite characters</FavoriteContainerTitle>
         <FavoriteContainerList>
-          {favorites.favorites.length > 0 ? (
-            favorites.favorites.map((favorite) => (
-              <FavoriteName>{favorite.name}</FavoriteName>
+          {favoriteCharacters.length > 0 ? (
+            favoriteCharacters.map((favorite) => (
+              <FavoriteCard>
+                <FavoritePicture>
+                  <FavoriteImg
+                    src={favorite.image}
+                    alt={`Favorite-${favorite.name}`}
+                  />
+                </FavoritePicture>
+
+                <FavoriteName>{favorite.name}</FavoriteName>
+                <FavoriteOrigin>{favorite.origin.name}</FavoriteOrigin>
+              </FavoriteCard>
             ))
           ) : (
             <FavoriteName>No favorites yet 🌀</FavoriteName>
@@ -114,7 +151,7 @@ const Characters = ({ dark }) => {
       </FavoriteContainer>
 
       <CharactersContainer>
-        {filteredCharacters &&
+        {filteredCharacters.length &&
           !loading &&
           !error &&
           filteredCharacters.map((char) => {
@@ -130,7 +167,7 @@ const Characters = ({ dark }) => {
             );
           })}
 
-        {!filteredCharacters.length && !error && loading && <h1>Loading...</h1>}
+        {!filteredCharacters.length && !error && loading && <Spinner />}
 
         {!filteredCharacters.length && !loading && !error && (
           <FavoriteName>
