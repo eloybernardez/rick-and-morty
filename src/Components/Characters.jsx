@@ -130,9 +130,9 @@ const Characters = ({ dark }) => {
             );
           })}
 
-        {!filteredCharacters && !error && loading && <h1>Loading...</h1>}
+        {!filteredCharacters.length && !error && loading && <h1>Loading...</h1>}
 
-        {!filteredCharacters && !loading && !error && (
+        {!filteredCharacters.length && !loading && !error && (
           <FavoriteName>
             No characters found! Maybe trying in another dimension? 🍄
           </FavoriteName>
