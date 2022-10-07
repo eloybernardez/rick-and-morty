@@ -68,7 +68,7 @@ const favoriteReducer = (state, action) => {
 };
 
 const Characters = ({ dark }) => {
-  const { newCharacters } = useGetCharacters(API);
+  const { newCharacters, loading, error } = useGetCharacters(API);
   const [favorites, dispatch] = useReducer(favoriteReducer, initialState);
   const [search, setSearch] = useState("");
   const searchInput = useRef(null);
@@ -114,7 +114,9 @@ const Characters = ({ dark }) => {
       </FavoriteContainer>
 
       <CharactersContainer>
-        {filteredCharacters.length ? (
+        {filteredCharacters.length > 0 &&
+          !loading &&
+          !error &&
           filteredCharacters.map((char) => {
             return (
               <div key={`Character-${char.id}`}>
@@ -126,8 +128,11 @@ const Characters = ({ dark }) => {
                 />
               </div>
             );
-          })
-        ) : (
+          })}
+        {filteredCharacters.length === 0 && !error && loading && (
+          <h1>Loading...</h1>
+        )}
+        {filteredCharacters.length === 0 && !loading && !error && (
           <FavoriteName>
             No characters found! Maybe trying in another dimension? 🍄
           </FavoriteName>

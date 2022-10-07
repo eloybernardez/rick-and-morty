@@ -4,7 +4,6 @@ import styled from "styled-components";
 const CharacterContainer = styled.main`
   background: ${({ dark }) => (!dark ? "#272727" : "#ffff")};
   color: ${({ dark }) => (dark ? "#272727" : "#ffff")};
-
   height: auto;
   padding: 1rem;
   border-radius: 10px;
