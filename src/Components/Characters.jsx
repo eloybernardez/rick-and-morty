@@ -8,11 +8,10 @@ import React, {
 import Character from "./Character";
 import Search from "./Search";
 import useGetCharacters from "../hooks/useGetCharacters";
+import useLocalStorage from "../hooks/useLocalStorage";
 import Spinner from "./Spinner";
 import Favorites from "./Favorites";
 import styled from "styled-components";
-
-const API = "https://rickandmortyapi.com/api/character";
 
 const CharactersContainer = styled.section`
   display: grid;
@@ -26,6 +25,8 @@ const ErrorState = styled.p`
   font-family: sans-serif;
 `;
 
+const API = "https://rickandmortyapi.com/api/character/";
+
 const initialState = {
   favorites: [],
 };
@@ -35,7 +36,7 @@ const favoriteReducer = (state, action) => {
     case "ADD_TO_FAVORITE":
       return {
         ...state,
-        favorites: [...new Set([...state.favorites, action.payload])],
+        favorites: [...state.favorites, action.payload],
       };
     case "REMOVE_FROM_FAVORITE":
       return {
@@ -44,22 +45,40 @@ const favoriteReducer = (state, action) => {
           (favorite) => favorite.id !== action.payload.id
         ),
       };
+
     default:
       return state;
   }
 };
 
 const Characters = ({ dark }) => {
+  const [favoritesStorage = storedValue, setStore = setValue] = useLocalStorage(
+    "favs",
+    initialState
+  );
   const { newCharacters, loading, error } = useGetCharacters(API);
   const [search, setSearch] = useState("");
   const searchInput = useRef(null);
-  const [favorites, dispatch] = useReducer(favoriteReducer, initialState);
+  const [favorites, dispatch] = useReducer(favoriteReducer, favoritesStorage);
 
-  const handleAdd = (favorite) =>
-    dispatch({ type: "ADD_TO_FAVORITE", payload: favorite });
+  const handleAdd = (favorite) => {
+    if (favorites.favorites.every((fav) => fav.id !== favorite.id)) {
+      dispatch({
+        type: "ADD_TO_FAVORITE",
+        payload: { ...favorite, isFavorite: true },
+      });
+      setStore(favorites);
+    }
+  };
 
-  const handleRemove = (favorite) =>
-    dispatch({ type: "REMOVE_FROM_FAVORITE", payload: favorite });
+  const handleRemove = (favorite) => {
+    dispatch({
+      type: "REMOVE_FROM_FAVORITE",
+      payload: { ...favorite, isFavorite: false },
+    });
+
+    setStore(favorites);
+  };
 
   const handleSearch = useCallback(
     () => setSearch(searchInput.current.value),
@@ -68,8 +87,8 @@ const Characters = ({ dark }) => {
 
   const filteredCharacters = useMemo(
     () =>
-      newCharacters.filter((user) => {
-        return user.name.toLowerCase().includes(search.toLowerCase());
+      newCharacters.filter((character) => {
+        return character.name.toLowerCase().includes(search.toLowerCase());
       }),
     [newCharacters, search]
   );

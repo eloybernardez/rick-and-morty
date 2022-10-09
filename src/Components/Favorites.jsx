@@ -55,13 +55,13 @@ const FavoriteContainerList = styled.div`
 `;
 
 const Favorites = ({ favorites }) => {
-  const { favoriteCharacters = favorites.favorites } = favorites;
+  const { favoriteCharacters = favorites?.favorites } = favorites;
 
   return (
     <FavoriteContainer>
       <FavoriteContainerTitle>Favorite characters</FavoriteContainerTitle>
       <FavoriteContainerList>
-        {favoriteCharacters.length > 0 ? (
+        {favoriteCharacters?.length > 0 ? (
           favoriteCharacters.map((favorite) => (
             <FavoriteCard key={`Favorite-${favorite.name}`}>
               <FavoritePicture>

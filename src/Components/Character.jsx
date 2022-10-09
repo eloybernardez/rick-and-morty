@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Favorites from "./Favorites";
 
 const CharacterContainer = styled.main`
   background: ${({ dark }) => (!dark ? "#272727" : "#ffff")};
@@ -59,7 +60,6 @@ const CharacterButtonFavorite = styled.button`
 
 const Character = ({ character, handleAdd, handleRemove, dark }) => {
   const [isAdded, setIsAdded] = useState(false);
-
   const handleAdded = () => {
     setIsAdded((prevState) => !prevState);
   };
